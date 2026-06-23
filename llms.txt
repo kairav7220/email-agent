@@ -1,0 +1,29 @@
+# Email Agent
+
+## Description
+AI-powered email assistant — fetches unread Gmail emails and generates replies using Groq LLM. Built with Flask.
+
+## Tech Stack
+Python 3.11, Flask, Groq (llama-3.3-70b-versatile), IMAP (Gmail), SMTP (Gmail), Bootstrap 5
+
+## Core Files
+- app.py: Flask app — IMAP fetch unread, Groq generate reply, SMTP send
+- knowledge_base.txt: Business context for TechFix IT Repairs (services, pricing, policies)
+- templates/index.html: Bootstrap UI with editable draft replies
+
+## Key Patterns
+- IMAP4_SSL to Gmail, search for UNSEEN only, dedup with OrderedDict by email_id
+- Multi-part email parsing with text/plain fallback
+- System prompt injection with knowledge_base content for context-aware replies
+- Three LLM providers in code (Groq active, Mistral + Gemini commented)
+- SMTP with STARTTLS for sending, gunicorn for deployment
+
+## Entry Point
+python app.py (local) or gunicorn app:app (Render)
+
+## API Keys (.env)
+EMAIL_ADDRESS, EMAIL_PASSWORD, GROQ_API_KEY (MISTRAL_API_KEY, GEMINI_API_KEY optional)
+
+## Routes
+- GET / — fetch unread emails, render with drafts
+- POST /send-email — send reply via SMTP
